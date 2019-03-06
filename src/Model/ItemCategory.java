@@ -1,45 +1,41 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Model;
 
 /**
- *
- * @author Thia
+ * A category of item
  */
 public class ItemCategory {
-    
+
     private String name;
 
     /**
+     * Creates an item category.
      *
-     * @param listCategoryName
-     * @param listCategoryDescription
+     * @param name The name of the item category
      */
-    public ItemCategory(String listCategoryName, String listCategoryDescription) {
-        this.name = listCategoryName;
+    public ItemCategory(String name) {
+        this.name = name;
     }
-    
+
     /**
-     * Creates the category in the database if it doesn't already exist
+     * Inserts the category of item in the database.
      */
-    public void createCategory() {
+    public void insert() {
 
     }
-    
+
     /**
+     * Gets the name of the item category.
      *
-     * @return
+     * @return The name of the item category
      */
     public String getName() {
         return name;
     }
 
     /**
+     * Sets the name of the item category.
      *
-     * @param name
+     * @param name The name of the item category
      */
     public void setName(String name) {
         this.name = name;

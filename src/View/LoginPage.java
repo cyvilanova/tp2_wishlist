@@ -1,4 +1,4 @@
-package com.tp2;
+package View;
 
 public class LoginPage {
 }

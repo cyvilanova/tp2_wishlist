@@ -3,8 +3,7 @@ package Model;
 import java.util.ArrayList;
 
 /**
- *
- * @author Thia
+ * A wishlist of items the user would like to get
  */
 public class Wishlist {
 
@@ -13,90 +12,79 @@ public class Wishlist {
     private ArrayList<Item> items;
 
     /**
+     * Creates a wishlist
      *
-     * @param wishlistName
-     * @param wishlistDescription
+     * @param name The name of the wishlist
+     * @param description The description of the wishlist
      */
-    public Wishlist(String wishlistName, String wishlistDescription) {
-        this.name = wishlistName;
-        this.description = wishlistDescription;
-    }
-    /**
-     * Remove all the entities from the list and
-     * completely removes the list from the database.
-     */
-    public void removeList() {
-
+    public Wishlist(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
     /**
-     * This method loads all the info of a list and all it's
-     * Entities.
+     * Deletes the wishlist from the database
      */
-    public void loadList() {
+    public void delete() {
 
     }
 
     /**
-     * Create a new list in the database
-     * This method will NOT add items in the list
+     * Inserts the wishlist in the database
      */
-    public void createWishlist() {
+    public void insert() {
 
     }
 
     /**
+     * Gets the name of the wishlist
      *
-     * @return
+     * @return The name of the wishlist
      */
-    public String getListName() {
+    public String getName() {
         return name;
     }
 
     /**
+     * Sets the name of the wishlist
      *
-     * @param name
+     * @param name The name of the wishlist
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
+     * Gets the description of the wishlist
      *
-     * @return
+     * @return The description of the wishlist
      */
     public String getDescription() {
         return description;
     }
 
     /**
+     * Sets the description of the wishlist
      *
-     * @param description
+     * @param description The description of the wishlist
      */
     public void setDescription(String description) {
         this.description = description;
     }
 
     /**
+     * Gets the arraylist of items in the wishlist
      *
-     * @param index
-     * @return
-     */
-    public Item getItem(int index) {
-        return this.items.get(index);
-    }
-
-    /**
-     *
-     * @return
+     * @return The arraylist of items in the wishlist
      */
     public ArrayList<Item> getListItems() {
         return items;
     }
 
     /**
+     * Adds an item to the arraylist
      *
-     * @param item
+     * @param item The item to add to the wishlist
      */
     public void addItem(Item item) {
         this.items.add(item);
