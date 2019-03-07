@@ -60,20 +60,18 @@ CREATE TABLE IF NOT EXISTS item
 
 CREATE TABLE IF NOT EXISTS ta_wishlist_item 
   ( 
-     id_wishlist_item INT UNSIGNED NOT NULL auto_increment, 
      id_wishlist      INT UNSIGNED NOT NULL, 
      id_item          INT UNSIGNED NOT NULL, 
-     CONSTRAINT pk_ta_wishlist_item PRIMARY KEY(id_wishlist_item), 
+     CONSTRAINT pk_ta_wishlist_item PRIMARY KEY(id_wishlist, id_item), 
      FOREIGN KEY (id_wishlist) REFERENCES wishlist(id_wishlist),
      FOREIGN KEY (id_item) REFERENCES item(id_item)
   ); 
 
 CREATE TABLE IF NOT EXISTS ta_category_wishlist 
   ( 
-     id_category_wishlist INT UNSIGNED NOT NULL auto_increment, 
      id_wishlist_category INT UNSIGNED NOT NULL, 
      id_wishlist          INT UNSIGNED NOT NULL, 
-     CONSTRAINT pk_ta_category_wishlist  PRIMARY KEY(id_category_wishlist), 
+     CONSTRAINT pk_ta_category_wishlist  PRIMARY KEY(id_wishlist_category, id_wishlist), 
      FOREIGN KEY (id_wishlist_category) REFERENCES wishlist_category(id_wishlist_category), 
      FOREIGN KEY (id_wishlist) REFERENCES wishlist(id_wishlist) 
   ); 
