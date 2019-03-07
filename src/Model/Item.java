@@ -1,5 +1,10 @@
 package Model;
 
+import tp2_wishlist.SimpleDataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 /**
  * An item the user wishes to get or wants to achieve. It has a name and can
  * have a price, an url and a description.
@@ -25,12 +30,29 @@ public class Item {
         this.url = url;
         this.description = description;
     }
-
+    
     /**
      * Inserts the item in the database.
+     *
+     * @param id_currency The price's currency
+     * @param id_item_category The item category
+     * @throws java.sql.SQLException
      */
-    public void insert() {
+    public void insert(Integer id_currency, Integer id_item_category) throws SQLException {
+        Connection conn = SimpleDataSource.getConnection();
 
+        try {
+            PreparedStatement stat = conn.prepareStatement("INSERT INTO item(name, price, link, description, id_currency, id_item_category) VALUES(?,?,?,?,?,?);");
+            stat.setString(1, name);
+            stat.setDouble(2, price);
+            stat.setString(3, url);
+            stat.setString(4, description);
+            stat.setInt(5, id_currency);
+            stat.setInt(6, id_item_category);
+            stat.executeUpdate();
+        } finally {
+            conn.close();
+        }
     }
 
     /**
