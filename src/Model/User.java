@@ -1,5 +1,12 @@
 package Model;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import tp2_wishlist.SimpleDataSource;
+
 /**
  * A user using the application and connecting to the database with an username
  * and a password to create, to edit or to see their wishlists.
@@ -21,36 +28,25 @@ public class User {
     }
 
     /**
-     * Inserts the user in the database
-     */
-    public void insert() {
-
-    }
-
-    /**
-     * Updates the current information of the user in the database.
-     */
-    public void update() {
-
-    }
-
-    /**
-     * Checks if the user entered a password that matches with the one in the
-     * database
      *
-     * @return true if the password is valid for the username.
      */
-    public boolean isPasswordValid() {
-
-        return true;
+    public User() {
     }
 
     /**
-     * This function updates the userPassword in the database.
+     * Inserts the user in the database
+     * @throws java.sql.SQLException
      */
-    public void updatePassword() {
+    public void insert() throws SQLException {
+        Connection conn = SimpleDataSource.getConnection();
 
-        if (!isPasswordValid()) {
+        try {
+            PreparedStatement stat = conn.prepareStatement("INSERT INTO user(username, password) VALUES(?,?);");
+            stat.setString(1, username);
+            stat.setString(2, password);
+            stat.executeUpdate();
+        } finally {
+            conn.close();
         }
     }
 
@@ -88,6 +84,50 @@ public class User {
      */
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
+    public Integer getUserId() throws SQLException {
+        Connection conn = SimpleDataSource.getConnection();
+
+        Integer userId = null;
+        try {
+            String query = "SELECT id_user FROM user WHERE username = \"" + username + "\" AND password = \"" + password + "\";";
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            if (rs.next()) {
+                userId = rs.getInt(1);
+            }
+
+        } finally {
+            conn.close();
+        }
+        return userId;
+    }
+
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
+    public boolean usernameIsTaken() throws SQLException {
+        Connection conn = SimpleDataSource.getConnection();
+
+        try {
+            String query = "SELECT id_user FROM user WHERE username = \"" + username + "\";";
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            return rs.first();
+
+        } finally {
+            conn.close();
+        }
     }
 
 }
