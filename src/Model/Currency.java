@@ -11,10 +11,21 @@ import tp2_wishlist.SimpleDataSource;
 
 /**
  *
+ * @author Thia
  */
 public class Currency {
+    
+    /**
+     *
+     */
+    public Currency() {};
 
-    public static ArrayList<String> getAll() throws SQLException {
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
+    public ArrayList<String> getAll() throws SQLException {
         ArrayList<String> currencies = new ArrayList<>();
 
         Connection conn = SimpleDataSource.getConnection();
@@ -34,7 +45,13 @@ public class Currency {
         return currencies;
     }
 
-    public static Integer getCurrencyId(String currency) throws SQLException {
+    /**
+     *
+     * @param currency
+     * @return
+     * @throws SQLException
+     */
+    public Integer getCurrencyId(String currency) throws SQLException {
         Connection conn = SimpleDataSource.getConnection();
         try {
             String query = "SELECT id_currency FROM currency WHERE symbol = \"" + currency + "\";";

@@ -1,11 +1,14 @@
 package tp2_wishlist;
 
-import View.AddItem;
-import java.awt.*;
+import View.*;
+import java.awt.CardLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  *
@@ -21,33 +24,77 @@ public class Main {
         } else {
             try {
                 SimpleDataSource.init(args[0]);
-                createWindow();
+                openApp();
                 
             } catch (IOException | ClassNotFoundException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
+            }         
         }
     }
     
-    private static void createWindow() {
-        JFrame window = new JFrame();
+    private static void openApp() {
+        JPanel cards;
         
-        JPanel fixedPanel = new JPanel(new GridBagLayout());
-        fixedPanel.setPreferredSize(window.getSize());
+        LogIn logInPanel = new LogIn();
+        AddItem addItemPanel = new AddItem();
+        AddWishlist addWishlistPanel = new AddWishlist();
+        AddCategory addCatWishlistPanel = new AddCategory();
+        SeeWishlists seeUserWishlist = new SeeWishlists();
         
-        AddItem addItemPage = new AddItem();
+        cards = new JPanel(new CardLayout());
+        cards.add(logInPanel, "Login");
+        cards.add(seeUserWishlist, "UsersWishlists");
+        cards.add(addItemPanel, "AddItem");
+        cards.add(addCatWishlistPanel, "AddCategory");
+        cards.add(addWishlistPanel, "AddWishlist");
         
-        window.setBounds(0,0,1280,720);
-        window.setTitle("Wishlist");
-        fixedPanel.add(addItemPage);
-        window.add(fixedPanel);
-        window.setVisible(true); 
+        JFrame frame = new JFrame();
+        frame.getContentPane().add(cards);
+        frame.pack();
+        frame.setVisible(true);
+        
+        CardLayout cardLayout = (CardLayout) cards.getLayout();
+        
+        PropertyChangeListener loginChangeListener = (PropertyChangeEvent changeEvent) -> {
+            if (changeEvent.getNewValue().toString() == "true") {
+                cardLayout.show(cards, "UsersWishlists");
+                seeUserWishlist.displayWishlists();
+            }
+        };
+        
+        PropertyChangeListener seeWishlistListener = (PropertyChangeEvent changeEvent) -> {
+            if (changeEvent.getPropertyName() == "btnAddItemClick") {
+                cardLayout.show(cards, "AddItem");
+                addItemPanel.setWishlistId((Integer) changeEvent.getNewValue());
+            }
+            else if(changeEvent.getPropertyName() == "btnAddCategory") {
+                cardLayout.show(cards, "AddCategory");
+            }
+            else if(changeEvent.getPropertyName() == "btnAddWishlist") {
+                cardLayout.show(cards, "AddWishlist");
+            }
+            else if(changeEvent.getPropertyName() == "btnDeleteWishlistClick") {
+                cardLayout.show(cards, "UsersWishlists");
+            }
+        };
+        
+        PropertyChangeListener addItemListener = (PropertyChangeEvent changeEvent) -> {
+            cardLayout.show(cards, "addCatWishlistPanel");
+        };
+        
+        PropertyChangeListener addCategoryWishlistListener = (PropertyChangeEvent changeEvent) -> {
+            cardLayout.show(cards, "UsersWishlists");
+        };
+        
+        PropertyChangeListener addWishlistListener = (PropertyChangeEvent changeEvent) -> {
+            cardLayout.show(cards, "UsersWishlists");
+            seeUserWishlist.displayWishlists();
+        };
+                
+        logInPanel.addPropertyChangeListener(loginChangeListener);
+        seeUserWishlist.addPropertyChangeListener(seeWishlistListener);
+        addItemPanel.addPropertyChangeListener(addItemListener);
+        addCatWishlistPanel.addPropertyChangeListener(addCategoryWishlistListener);
+        addWishlistPanel.addPropertyChangeListener(addWishlistListener);
     }
-    
-    
-    private static void logIn() {
-        
-    }
-    
 }

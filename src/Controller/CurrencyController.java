@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.Currency;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -10,20 +11,37 @@ import java.util.logging.Logger;
  * database.
  */
 public class CurrencyController {
-
-    public static ArrayList<String> getAll() {
+    Currency currencyModel;
+    
+    /**
+     *
+     */
+    public CurrencyController() {
+        this.currencyModel = new Currency();
+    }
+    
+    /**
+     *
+     * @return
+     */
+    public ArrayList<String> getAll() {
         try {
-            return Model.Currency.getAll();
+            return currencyModel.getAll();
         } catch (SQLException ex) {
             Logger.getLogger(CurrencyController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
 
-    public static Integer getId(String currency) {
+    /**
+     *
+     * @param currency
+     * @return
+     */
+    public Integer getId(String currency) {
         
         try {
-            return Model.Currency.getCurrencyId(currency);
+            return currencyModel.getCurrencyId(currency);
         } catch (SQLException ex) {
             Logger.getLogger(CurrencyController.class.getName()).log(Level.SEVERE, null, ex);
         }

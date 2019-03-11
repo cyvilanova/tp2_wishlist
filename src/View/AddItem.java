@@ -5,7 +5,12 @@
  */
 package View;
 
+import Controller.ItemCategoryController;
+import Controller.CurrencyController;
+import Controller.ItemController;
 import java.awt.Color;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import javax.swing.border.LineBorder;
 
 /**
@@ -14,11 +19,25 @@ import javax.swing.border.LineBorder;
  */
 public class AddItem extends javax.swing.JPanel {
 
+    CurrencyController currencyController;
+    ItemController itemController;
+    ItemCategoryController itemCategoryController;
+    Integer wishlistId;
+    private final PropertyChangeSupport propChangeSupport = new PropertyChangeSupport(this);
+
     /**
      * Creates new form AddItem
      */
     public AddItem() {
+        this.itemCategoryController = new ItemCategoryController();
+        this.currencyController = new CurrencyController();
+        this.itemController = new ItemController();
         initComponents();
+    }
+
+    @Override
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        propChangeSupport.addPropertyChangeListener(listener);
     }
 
     /**
@@ -46,11 +65,13 @@ public class AddItem extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
 
+        setBackground(new java.awt.Color(71, 85, 94));
+        setForeground(new java.awt.Color(255, 255, 255));
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         item_description.setColumns(20);
         item_description.setRows(5);
-        item_description.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        item_description.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         item_description.setFocusCycleRoot(true);
         item_description.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -62,16 +83,22 @@ public class AddItem extends javax.swing.JPanel {
         });
         jScrollPane1.setViewportView(item_description);
 
+        add_button.setBackground(new java.awt.Color(131, 170, 211));
+        add_button.setForeground(new java.awt.Color(255, 255, 255));
         add_button.setText("Add");
+        add_button.setBorderPainted(false);
         add_button.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 add_buttonActionPerformed(evt);
             }
         });
 
+        cancel_button.setBackground(new java.awt.Color(131, 170, 211));
+        cancel_button.setForeground(new java.awt.Color(255, 255, 255));
         cancel_button.setText("Cancel");
+        cancel_button.setBorderPainted(false);
 
-        item_price.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        item_price.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         item_price.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 item_priceFocusGained(evt);
@@ -81,14 +108,16 @@ public class AddItem extends javax.swing.JPanel {
             }
         });
 
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setText("Currency");
 
-        item_currency.setModel(new javax.swing.DefaultComboBoxModel<>(Controller.CurrencyController.getAll().toArray(new String[Controller.CurrencyController.getAll().size()])));
-        item_currency.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        item_currency.setModel(new javax.swing.DefaultComboBoxModel<>(currencyController.getAll().toArray(new String[currencyController.getAll().size()])));
+        item_currency.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setText("Link");
 
-        item_link.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        item_link.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         item_link.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 item_linkFocusGained(evt);
@@ -98,9 +127,10 @@ public class AddItem extends javax.swing.JPanel {
             }
         });
 
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Name *");
 
-        item_name.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        item_name.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         item_name.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 item_nameFocusGained(evt);
@@ -110,13 +140,16 @@ public class AddItem extends javax.swing.JPanel {
             }
         });
 
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Category");
 
-        item_category.setModel(new javax.swing.DefaultComboBoxModel<>(Controller.ItemCategoryController.getAll().toArray(new String[Controller.ItemCategoryController.getAll().size()])));
-        item_category.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        item_category.setModel(new javax.swing.DefaultComboBoxModel<>(itemCategoryController.getAll().toArray(new String[itemCategoryController.getAll().size()])));
+        item_category.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
 
+        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setText("Price");
 
+        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setText("Description");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -124,29 +157,30 @@ public class AddItem extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(94, 94, 94)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addComponent(jLabel6)
-                        .addComponent(jLabel5)
-                        .addComponent(jLabel2)
-                        .addComponent(jLabel1)
-                        .addComponent(item_name)
-                        .addComponent(item_category, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(item_price, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel3))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel4)
-                                .addComponent(item_currency, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(item_link)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
+                        .addGap(94, 94, 94)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel1)
+                            .addComponent(item_name)
+                            .addComponent(item_category, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(item_price, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel3))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel4)
+                                    .addComponent(item_currency, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(item_link)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(108, 108, 108)
                         .addComponent(cancel_button)
-                        .addGap(18, 18, 18)
+                        .addGap(46, 46, 46)
                         .addComponent(add_button)))
                 .addContainerGap(106, Short.MAX_VALUE))
         );
@@ -177,35 +211,36 @@ public class AddItem extends javax.swing.JPanel {
                 .addComponent(jLabel6)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(add_button)
                     .addComponent(cancel_button))
-                .addGap(24, 24, 24))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void item_descriptionFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_item_descriptionFocusGained
-        item_description.setBorder(new LineBorder(Color.blue, 1));
+        item_description.setBorder(new LineBorder(Color.decode("#83AAD3"), 1));
     }//GEN-LAST:event_item_descriptionFocusGained
 
     private void item_descriptionFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_item_descriptionFocusLost
-        item_description.setBorder(new LineBorder(Color.black, 1));
+        item_description.setBorder(new LineBorder(Color.white, 1));
     }//GEN-LAST:event_item_descriptionFocusLost
 
     private void add_buttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_add_buttonActionPerformed
         String name = item_name.getText().trim();
         String priceStr = item_price.getText().trim();
         Double price = 0.0;
+
         try {
             if (!priceStr.equals("")) {
                 price = Double.parseDouble(priceStr);
             }
             if (!name.equals("")) {
-                Integer id_currency = Controller.CurrencyController.getId((String) item_currency.getSelectedItem());
-                Integer id_item_category = Controller.ItemCategoryController.getId((String) item_category.getSelectedItem());
-                System.out.println(id_currency + " " + id_item_category + " " + item_link.getText().trim() + " " + item_description.getText().trim());
-                Controller.ItemController.insertItem(name, price, item_link.getText().trim(), item_description.getText().trim(), id_currency, id_item_category);
+                Integer id_currency = currencyController.getId((String) item_currency.getSelectedItem());
+                Integer id_item_category = itemCategoryController.getId((String) item_category.getSelectedItem());
+                itemController.insertItem(name, price, item_link.getText().trim(), item_description.getText().trim(), id_currency, id_item_category, getWishlistId());
+                propChangeSupport.firePropertyChange("itemAdded", false, true);
             } else {
                 item_name.setBorder(new LineBorder(Color.red, 1));
             }
@@ -215,29 +250,36 @@ public class AddItem extends javax.swing.JPanel {
     }//GEN-LAST:event_add_buttonActionPerformed
 
     private void item_priceFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_item_priceFocusGained
-        item_price.setBorder(new LineBorder(Color.blue, 1));
+        item_price.setBorder(new LineBorder(Color.decode("#83AAD3"), 1));
     }//GEN-LAST:event_item_priceFocusGained
 
     private void item_priceFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_item_priceFocusLost
-        item_price.setBorder(new LineBorder(Color.black, 1));
+        item_price.setBorder(new LineBorder(Color.white, 1));
     }//GEN-LAST:event_item_priceFocusLost
 
     private void item_linkFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_item_linkFocusGained
-        item_link.setBorder(new LineBorder(Color.blue, 1));
+        item_link.setBorder(new LineBorder(Color.decode("#83AAD3"), 1));
     }//GEN-LAST:event_item_linkFocusGained
 
     private void item_linkFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_item_linkFocusLost
-        item_link.setBorder(new LineBorder(Color.black, 1));
+        item_link.setBorder(new LineBorder(Color.white, 1));
     }//GEN-LAST:event_item_linkFocusLost
 
     private void item_nameFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_item_nameFocusGained
-        item_name.setBorder(new LineBorder(Color.blue, 1));
+        item_name.setBorder(new LineBorder(Color.decode("#83AAD3"), 1));
     }//GEN-LAST:event_item_nameFocusGained
 
     private void item_nameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_item_nameFocusLost
-        item_name.setBorder(new LineBorder(Color.black, 1));
+        item_name.setBorder(new LineBorder(Color.white, 1));
     }//GEN-LAST:event_item_nameFocusLost
 
+    public Integer getWishlistId() {
+        return wishlistId;
+    }
+
+    public void setWishlistId(Integer wishlistId) {
+        this.wishlistId = wishlistId;
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton add_button;

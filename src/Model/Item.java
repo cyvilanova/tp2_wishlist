@@ -3,7 +3,9 @@ package Model;
 import tp2_wishlist.SimpleDataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 /**
  * An item the user wishes to get or wants to achieve. It has a name and can
@@ -32,16 +34,24 @@ public class Item {
     }
     
     /**
+     *
+     */
+    public Item() {}
+    
+    /**
      * Inserts the item in the database.
      *
      * @param id_currency The price's currency
      * @param id_item_category The item category
+     * @param wishlistId
      * @throws java.sql.SQLException
      */
-    public void insert(Integer id_currency, Integer id_item_category) throws SQLException {
+    public void insert(Integer id_currency, Integer id_item_category, Integer wishlistId) throws SQLException {
         Connection conn = SimpleDataSource.getConnection();
 
         try {
+            Integer itemId = null;
+            
             PreparedStatement stat = conn.prepareStatement("INSERT INTO item(name, price, link, description, id_currency, id_item_category) VALUES(?,?,?,?,?,?);");
             stat.setString(1, name);
             stat.setDouble(2, price);
@@ -50,6 +60,20 @@ public class Item {
             stat.setInt(5, id_currency);
             stat.setInt(6, id_item_category);
             stat.executeUpdate();
+                        
+            String itemIdQuery = "SELECT LAST_INSERT_ID()";
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(itemIdQuery);
+
+            if (rs.next()) {
+                itemId = rs.getInt(1);
+            }
+            
+            PreparedStatement addItemToWishlist = conn.prepareStatement("INSERT INTO ta_wishlist_item(id_wishlist, id_item) VALUES(?,?);");
+            addItemToWishlist.setInt(1, wishlistId);
+            addItemToWishlist.setInt(2, itemId);
+            addItemToWishlist.executeUpdate();
+            
         } finally {
             conn.close();
         }

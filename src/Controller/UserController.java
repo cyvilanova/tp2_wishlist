@@ -10,7 +10,7 @@ import java.util.logging.Logger;
  */
 public class UserController {
     User userModel;
-    static Integer userId;
+    public static Integer userId;
 
     /**
      *
@@ -87,12 +87,7 @@ public class UserController {
         }
     }
     
-    
-    public static Integer getUserId() {
-        return userId;
-    }
-
-    public static void setUserId(Integer userId) {
+    private static void setUserId(Integer userId) {
         UserController.userId = userId;
     }
 }

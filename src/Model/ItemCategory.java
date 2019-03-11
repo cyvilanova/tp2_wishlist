@@ -26,6 +26,11 @@ public class ItemCategory {
     }
 
     /**
+     *
+     */
+    public ItemCategory() {}
+        
+    /**
      * Inserts the category of item in the database.
      */
     public void insert() {
@@ -55,7 +60,7 @@ public class ItemCategory {
      * @return An arraylist of all the item categories
      * @throws SQLException
      */
-    public static ArrayList<String> getAll() throws SQLException {
+    public ArrayList<String> getAll() throws SQLException {
         ArrayList<String> categories = new ArrayList<>();
 
         Connection conn = SimpleDataSource.getConnection();
@@ -75,23 +80,30 @@ public class ItemCategory {
         return categories;
     }
 
-    public static Integer getCategoryId(String category) throws SQLException {
+    /**
+     *
+     * @param category
+     * @return
+     * @throws SQLException
+     */
+    public Integer getCategoryId(String category) throws SQLException {
         Connection conn = SimpleDataSource.getConnection();
+        
+        Integer categoryId = null;
+        
         try {
             String query = "SELECT id_item_category FROM item_category WHERE name = \"" + category + "\";";
             Statement st = conn.createStatement();
             ResultSet rs = st.executeQuery(query);
 
-            int categoryId;
             if (rs.next()) {
                 categoryId = rs.getInt(1);
-                return categoryId;
             }
 
         } finally {
             conn.close();
         }
-        return null;
+        return categoryId;
     }
 
 }
