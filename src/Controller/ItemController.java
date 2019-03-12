@@ -1,8 +1,14 @@
 package Controller;
 import Model.Item;
+import Model.Wishlist;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import tp2_wishlist.SimpleDataSource;
 
 /**
  * Calls the methods from the class Item 
@@ -28,7 +34,7 @@ public class ItemController {
      * @param description
      * @param id_currency
      * @param id_item_category
-     * @param getWishlistId
+     * @param wishlistId
      */
     public void insertItem(String name, Double price, String link, String description, Integer id_currency, Integer id_item_category, Integer wishlistId) {
             Item newItem = new Item(name, price, link, description);
@@ -37,5 +43,26 @@ public class ItemController {
             } catch (SQLException ex) {
                 Logger.getLogger(ItemController.class.getName()).log(Level.SEVERE, null, ex);
             }
+    }
+
+    public ArrayList<Item> getWishlistItems(Integer wishlistId) {
+        ArrayList<Item> items = new ArrayList<>();
+        
+        try {
+            items = itemModel.getWishlistItems(wishlistId);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(WishlistController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return items;
+    }
+
+    public void deleteFromWishlist(Integer wishlistId, Integer itemId) {
+        try {
+            itemModel.deleteFromWishlist(wishlistId, itemId);
+        } catch (SQLException ex) {
+            Logger.getLogger(WishlistController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }

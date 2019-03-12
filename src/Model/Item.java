@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  * An item the user wishes to get or wants to achieve. It has a name and can
@@ -13,23 +14,26 @@ import java.sql.Statement;
  */
 public class Item {
 
+    private Integer id;
     private String name;
     private Double price;
-    private String url;
+    private String link;
     private String description;
+    private Integer currencyId;
+    private Integer categoryId;
 
     /**
      * Creates an item.
      *
      * @param name The name of the item
      * @param price The price of the item
-     * @param url The url where to get the item
+     * @param url The link where to get the item
      * @param description The description of the item
      */
     public Item(String name, Double price, String url, String description) {
         this.name = name;
         this.price = price;
-        this.url = url;
+        this.link = url;
         this.description = description;
     }
     
@@ -55,7 +59,7 @@ public class Item {
             PreparedStatement stat = conn.prepareStatement("INSERT INTO item(name, price, link, description, id_currency, id_item_category) VALUES(?,?,?,?,?,?);");
             stat.setString(1, name);
             stat.setDouble(2, price);
-            stat.setString(3, url);
+            stat.setString(3, link);
             stat.setString(4, description);
             stat.setInt(5, id_currency);
             stat.setInt(6, id_item_category);
@@ -77,13 +81,6 @@ public class Item {
         } finally {
             conn.close();
         }
-    }
-
-    /**
-     * Updates the information of the item.
-     */
-    public void update() {
-
     }
 
     /**
@@ -123,21 +120,21 @@ public class Item {
     }
 
     /**
-     * Gets the url where to get the item.
+     * Gets the link where to get the item.
      *
-     * @return The url where to get the item
+     * @return The link where to get the item
      */
-    public String getUrl() {
-        return url;
+    public String getLink() {
+        return link;
     }
 
     /**
-     * Sets the url where to get the item.
+     * Sets the link where to get the item.
      *
-     * @param url The url where to get the item
+     * @param link The link where to get the item
      */
-    public void setUrl(String url) {
-        this.url = url;
+    public void setLink(String link) {
+        this.link = link;
     }
 
     /**
@@ -156,5 +153,69 @@ public class Item {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public Integer getCurrencyId() {
+        return currencyId;
+    }
+
+    public void setCurrencyId(Integer currencyId) {
+        this.currencyId = currencyId;
+    }
+
+    public Integer getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Integer categoryId) {
+        this.categoryId = categoryId;
+    }
+    
+    public ArrayList<Item> getWishlistItems(Integer wishlistId) throws SQLException {
+        Connection conn = SimpleDataSource.getConnection();
+        ArrayList<Item> items = new ArrayList<>();
+
+        String queryWishlist = "SELECT * FROM item "
+                + "JOIN ta_wishlist_item ON item.id_item = ta_wishlist_item.id_item "
+                + "WHERE id_wishlist = " + wishlistId + ";";
+        Statement st = conn.createStatement();
+        ResultSet rs = st.executeQuery(queryWishlist);
+
+        while (rs.next()) {
+            Item item = new Item();
+            item.setId(rs.getInt("id_item"));
+            item.setName(rs.getString("name"));
+            item.setPrice(rs.getDouble("price"));
+            item.setLink(rs.getString("link"));
+            item.setDescription(rs.getString("description"));
+            item.setCurrencyId(rs.getInt("id_currency"));
+            item.setCategoryId(rs.getInt("id_item_category"));
+
+            items.add(item);
+        }
+
+        return items;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void deleteFromWishlist(Integer wishlistId, Integer itemId) throws SQLException {
+        Connection conn = SimpleDataSource.getConnection();
+
+        try {
+            PreparedStatement deleteTAItemWishlist = conn.prepareStatement(
+                    "DELETE FROM ta_wishlist_item WHERE id_wishlist = " + wishlistId + " AND id_item = " + itemId + ";"
+            );
+            deleteTAItemWishlist.executeUpdate();
+
+        } finally {
+            conn.close();
+        }
     }
 }

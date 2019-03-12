@@ -7,9 +7,14 @@ import java.util.logging.Logger;
 
 /**
  *
+ * @author Thia
  */
 public class UserController {
     User userModel;
+
+    /**
+     *
+     */
     public static Integer userId;
 
     /**
@@ -36,7 +41,6 @@ public class UserController {
             userConnectedId = newUser.getUserId();
             if(userConnectedId != null) {
                 setUserId(userConnectedId);
-                System.out.println(userConnectedId);
                 return true;
             }
             else return false;

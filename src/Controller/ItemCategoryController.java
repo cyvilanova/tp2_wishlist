@@ -51,4 +51,13 @@ public class ItemCategoryController {
         }
         return null;
     }
+    
+    public String getCategoryName(Integer categoryId) {
+        try {
+            return itemCategoryModel.getName(categoryId);
+        } catch (SQLException ex) {
+            Logger.getLogger(ItemCategoryController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
 }

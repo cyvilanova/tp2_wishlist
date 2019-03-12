@@ -106,4 +106,24 @@ public class ItemCategory {
         return categoryId;
     }
 
+    public String getName(Integer categoryId) throws SQLException {
+        Connection conn = SimpleDataSource.getConnection();
+        
+        String categoryName = null;
+        
+        try {
+            String query = "SELECT name FROM item_category WHERE id_item_category = \"" + categoryId + "\";";
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            if (rs.next()) {
+                categoryName = rs.getString(1);
+            }
+
+        } finally {
+            conn.close();
+        }
+        return categoryName;
+    }
+
 }

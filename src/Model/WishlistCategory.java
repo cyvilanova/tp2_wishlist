@@ -99,6 +99,12 @@ public class WishlistCategory {
         return categoryId;
     }
 
+    /**
+     *
+     * @param id
+     * @return
+     * @throws SQLException
+     */
     public String getCategoryName(Integer id) throws SQLException {
         Connection conn = SimpleDataSource.getConnection();
 

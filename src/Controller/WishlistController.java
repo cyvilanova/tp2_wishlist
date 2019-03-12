@@ -58,6 +58,11 @@ public class WishlistController {
         return wishlists;
     }
 
+    /**
+     *
+     * @param name
+     * @return
+     */
     public boolean nameIsTaken(String name) {
         Wishlist newWishlist = new Wishlist(name);
         
@@ -69,11 +74,33 @@ public class WishlistController {
         return true;
     }
 
+    /**
+     *
+     * @param wishlistId
+     */
     public void delete(Integer wishlistId) {
         try {
             wishlistModel.delete(wishlistId);
         } catch (SQLException ex) {
             Logger.getLogger(WishlistController.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+
+    public String getName(Integer wishlistId) {
+        try {
+            return wishlistModel.getName(wishlistId);
+        } catch (SQLException ex) {
+            Logger.getLogger(WishlistController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+
+    public String getDescription(Integer wishlistId) {
+         try {
+            return wishlistModel.getDescription(wishlistId);
+        } catch (SQLException ex) {
+            Logger.getLogger(WishlistController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

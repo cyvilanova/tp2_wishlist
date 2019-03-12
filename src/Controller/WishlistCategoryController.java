@@ -47,6 +47,11 @@ public class WishlistCategoryController {
         } 
     }
 
+    /**
+     *
+     * @param get
+     * @return
+     */
     public String getCategoryName(Integer get) {
         try {
             return wishlistCategoryModel.getCategoryName(get);

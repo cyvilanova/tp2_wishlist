@@ -39,6 +39,10 @@ public class Wishlist {
     public Wishlist() {
     }
 
+    /**
+     *
+     * @param name
+     */
     public Wishlist(String name) {
         this.name = name;
     }
@@ -128,18 +132,34 @@ public class Wishlist {
         this.description = description;
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<Integer> getCategoryIds() {
         return categoryIds;
     }
 
+    /**
+     *
+     * @param categoryIds
+     */
     public void setCategoryIds(ArrayList<Integer> categoryIds) {
         this.categoryIds = categoryIds;
     }
 
+    /**
+     *
+     * @return
+     */
     public Integer getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     public void setId(Integer id) {
         this.id = id;
     }
@@ -169,6 +189,11 @@ public class Wishlist {
         return wishlistId;
     }
 
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
     public ArrayList<Wishlist> getUsersWishlists() throws SQLException {
         Connection conn = SimpleDataSource.getConnection();
         ArrayList<Wishlist> wishlists = new ArrayList<>();
@@ -198,6 +223,11 @@ public class Wishlist {
         return wishlists;
     }
 
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
     public boolean nameIsTaken() throws SQLException {
         Connection conn = SimpleDataSource.getConnection();
 
@@ -212,6 +242,11 @@ public class Wishlist {
         }
     }
 
+    /**
+     *
+     * @param wishlistId
+     * @throws SQLException
+     */
     public void delete(Integer wishlistId) throws SQLException {
         Connection conn = SimpleDataSource.getConnection();
 
@@ -228,5 +263,41 @@ public class Wishlist {
         } finally {
             conn.close();
         }
+    }
+
+    public String getName(Integer wishlistId) throws SQLException {
+        Connection conn = SimpleDataSource.getConnection();
+
+        try {
+            String query = "SELECT name FROM wishlist WHERE id_wishlist = \"" + wishlistId + "\";";
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+
+        } finally {
+            conn.close();
+        }
+        return null;
+    }
+
+    public String getDescription(Integer wishlistId) throws SQLException {
+        Connection conn = SimpleDataSource.getConnection();
+
+        try {
+            String query = "SELECT description FROM wishlist WHERE id_wishlist = \"" + wishlistId + "\";";
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(query);
+            
+            if (rs.next()) {
+                return rs.getString(1);
+            }
+
+        } finally {
+            conn.close();
+        }
+        return null;
     }
 }
