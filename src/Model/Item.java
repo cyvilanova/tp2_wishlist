@@ -1,5 +1,6 @@
 package Model;
 
+import Controller.CurrencyController;
 import tp2_wishlist.SimpleDataSource;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -217,5 +218,10 @@ public class Item {
         } finally {
             conn.close();
         }
+    }
+
+    public String getCurrency() {
+        CurrencyController currencyController = new CurrencyController();
+        return currencyController.getSymbol(this.currencyId);
     }
 }

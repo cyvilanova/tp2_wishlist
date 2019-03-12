@@ -83,7 +83,7 @@ public class Wishlist {
             
             for(int i = 0; i < categories.size(); i++) {
                 Integer categoryId = wishlistCategory.getCategoryId(categories.get(i));
-                System.out.println(categories.get(i));
+                
                 PreparedStatement stat = conn.prepareStatement("INSERT INTO ta_category_wishlist(id_wishlist_category, id_wishlist) VALUES(?,?);");
                 stat.setInt(1, categoryId);
                 stat.setInt(2, wishlistId);

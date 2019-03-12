@@ -7,8 +7,17 @@ import Model.Item;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 
@@ -48,41 +57,19 @@ public class WishlistView extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btn_back = new javax.swing.JButton();
-
         setBackground(new java.awt.Color(71, 85, 94));
-
-        btn_back.setBackground(new java.awt.Color(131, 170, 211));
-        btn_back.setForeground(new java.awt.Color(255, 255, 255));
-        btn_back.setText("Back");
-        btn_back.setBorderPainted(false);
-        btn_back.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_backActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(50, 50, 50)
-                .addComponent(btn_back)
-                .addContainerGap(719, Short.MAX_VALUE))
+            .addGap(0, 824, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(78, 78, 78)
-                .addComponent(btn_back)
-                .addContainerGap(524, Short.MAX_VALUE))
+            .addGap(0, 625, Short.MAX_VALUE)
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btn_backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_backActionPerformed
-        propChangeSupport.firePropertyChange("btnBack", false, true);
-    }//GEN-LAST:event_btn_backActionPerformed
 
     /**
      *
@@ -91,6 +78,19 @@ public class WishlistView extends javax.swing.JPanel {
 
         Integer leftPadding = 300;
         Integer topPadding = 40;
+
+        JButton btnBack = new JButton();
+        btnBack.setBackground(Color.decode("#83AAD3"));
+        btnBack.setForeground(Color.white);
+        btnBack.setText("Back");
+        btnBack.setBorderPainted(false);
+        btnBack.setSize(100, 25);
+        btnBack.setLocation(100, 200);
+        add(btnBack);
+
+        btnBack.addActionListener((java.awt.event.ActionEvent evt) -> {
+            propChangeSupport.firePropertyChange("btnBack", false, true);
+        });
 
         JLabel wishlistName = new JLabel(wishlistController.getName(wishlistId));
         wishlistName.setBounds(leftPadding, topPadding, 400, 30);
@@ -115,8 +115,9 @@ public class WishlistView extends javax.swing.JPanel {
         for (int i = 0; i < wishlistItems.size(); i++) {
 
             final Integer itemId = wishlistItems.get(i).getId();
+            final Item item = wishlistItems.get(i);
 
-            JLabel itemName = new JLabel(wishlistItems.get(i).getName());
+            JLabel itemName = new JLabel(item.getName());
             itemName.setBounds(leftPadding, 150 + (i * 70), 400, 30);
             itemName.setOpaque(true);
             itemName.setFont(itemName.getFont().deriveFont(16.0f));
@@ -124,12 +125,33 @@ public class WishlistView extends javax.swing.JPanel {
             itemName.setForeground(Color.white);
             add(itemName);
 
+            JLabel itemDescription = new JLabel(item.getDescription());
+            itemDescription.setBounds(leftPadding, 150 + (i * 70), 400, 30);
+            itemDescription.setOpaque(true);
+            itemDescription.setFont(itemDescription.getFont().deriveFont(16.0f));
+            itemDescription.setBackground(Color.decode("#47555E"));
+            itemDescription.setForeground(Color.white);
+            add(itemDescription);
+
             JLabel categoryName = new JLabel(itemCategoryController.getCategoryName(wishlistItems.get(i).getCategoryId()));
-            categoryName.setBounds(leftPadding + 20, 180 + (i * 70), 200, 30);
+            categoryName.setBounds(leftPadding, 170 + (i * 70), 200, 30);
             categoryName.setOpaque(true);
+            categoryName.setFont(categoryName.getFont().deriveFont(10.0f));
             categoryName.setBackground(Color.decode("#47555E"));
             categoryName.setForeground(Color.white);
             add(categoryName);
+
+            Double price = item.getPrice();
+
+            if (price != 0) {
+                JLabel itemPrice = new JLabel(price + " " + item.getCurrency());
+                itemPrice.setBounds(leftPadding, 190 + (i * 70), 400, 30);
+                itemPrice.setOpaque(true);
+                itemPrice.setFont(itemPrice.getFont().deriveFont(12.0f));
+                itemPrice.setBackground(Color.decode("#47555E"));
+                itemPrice.setForeground(Color.white);
+                add(itemPrice);
+            }
 
             JButton btnDeleteFromWishlist = new JButton();
             btnDeleteFromWishlist.setText("X");
@@ -147,13 +169,66 @@ public class WishlistView extends javax.swing.JPanel {
                 initComponents();
                 displayItems();
             });
+
+            String url = item.getLink();
+            if (!url.equals("")) {
+                JButton btnLink = new JButton();
+                btnLink.setText("Link");
+                btnLink.setBackground(Color.decode("#83AAD3"));
+                btnLink.setForeground(Color.white);
+                btnLink.setBorderPainted(false);
+                btnLink.setSize(80, 25);
+                btnLink.setLocation(leftPadding + 495, 165 + (i * 70));
+                add(btnLink);
+
+                btnLink.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        try {
+                            openWebpage(item.getLink());
+                        } catch (MalformedURLException ex) {
+                            Logger.getLogger(WishlistView.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                });
+            }
         }
     }
 
     public void setWishlistId(Integer wishlistId) {
         this.wishlistId = wishlistId;
     }
+
+    public static boolean openWebpage(URI uri) {
+        Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
+        if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
+            try {
+                desktop.browse(uri);
+            } catch (IOException ex) {
+                Logger.getLogger(WishlistView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean openWebpage(String urlString) throws MalformedURLException {
+
+        try {
+            return openWebpage(new URL(urlString).toURI());
+        } catch (URISyntaxException ex) {
+            Logger.getLogger(WishlistView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        return false;
+    }
+
+    public void update() {
+
+        removeAll();
+        initComponents();
+        displayItems();
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btn_back;
     // End of variables declaration//GEN-END:variables
 }

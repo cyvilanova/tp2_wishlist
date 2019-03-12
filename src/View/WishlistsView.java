@@ -52,6 +52,7 @@ public class WishlistsView extends javax.swing.JPanel {
     private void initComponents() {
 
         setBackground(new java.awt.Color(71, 85, 94));
+        setAutoscrolls(true);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);

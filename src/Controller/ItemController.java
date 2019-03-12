@@ -1,14 +1,9 @@
 package Controller;
 import Model.Item;
-import Model.Wishlist;
-import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import tp2_wishlist.SimpleDataSource;
 
 /**
  * Calls the methods from the class Item 

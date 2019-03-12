@@ -47,4 +47,13 @@ public class CurrencyController {
         }
         return null;
     }
+
+    public String getSymbol(Integer currencyId) {
+        try {
+            return currencyModel.getSymbol(currencyId);
+        } catch (SQLException ex) {
+            Logger.getLogger(CurrencyController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return "";
+    }
 }

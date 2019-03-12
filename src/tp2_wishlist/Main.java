@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 /**
  *
@@ -72,9 +71,9 @@ public class Main {
                 addItemPanel.setWishlistId((Integer) changeEvent.getNewValue());
             }
             else if(changeEvent.getPropertyName() == "btnView") {
-                cardLayout.show(cards, "ViewWishlist");
                 seeWishlist.setWishlistId((Integer) changeEvent.getNewValue());
-                seeWishlist.displayItems();
+                seeWishlist.update();
+                cardLayout.show(cards, "ViewWishlist");
             }
             else if(changeEvent.getPropertyName() == "btnAddCategory") {
                 cardLayout.show(cards, "AddCategory");
@@ -102,7 +101,9 @@ public class Main {
         };
         
         PropertyChangeListener wishlistViewListener = (PropertyChangeEvent changeEvent) -> {
-            cardLayout.show(cards, "UsersWishlists");
+            if (changeEvent.getPropertyName() == "btnBack") {
+                cardLayout.show(cards, "UsersWishlists");
+            }
         };
                 
         logInPanel.addPropertyChangeListener(loginChangeListener);

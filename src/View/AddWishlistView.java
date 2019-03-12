@@ -179,11 +179,13 @@ public class AddWishlistView extends javax.swing.JPanel {
 
         if (!name.equals("")) {
             if(!wishlistController.nameIsTaken(name)) {
+                
                 String description = wishlist_description.getText().trim();
                 List<String> categories_selected = wishlist_categories.getSelectedValuesList();
-                System.out.println(categories_selected);
+                
                 wishlistController.newWishlist(name, description, categories_selected);
                 propChangeSupport.firePropertyChange("btnWishlistAdded", false, true);
+                
             } else {
                 err_mess.setText("A wishlist already has this name.");
             }

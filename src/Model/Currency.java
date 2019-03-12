@@ -69,4 +69,23 @@ public class Currency {
         }
         return null;
     }
+
+    public String getSymbol(Integer currencyId) throws SQLException {
+        Connection conn = SimpleDataSource.getConnection();
+        try {
+            String query = "SELECT symbol FROM currency WHERE id_currency = \"" + currencyId + "\";";
+            Statement st = conn.createStatement();
+            ResultSet rs = st.executeQuery(query);
+
+            String currencySymbol;
+            if (rs.next()) {
+                currencySymbol = rs.getString(1);
+                return currencySymbol;
+            }
+
+        } finally {
+            conn.close();
+        }
+        return null;
+    }
 }
